@@ -1,0 +1,117 @@
+\documentclass{article}
+
+\usepackage{graphicx} %package to manage images
+\graphicspath{ {images/} }
+
+\usepackage[rightcaption]{sidecap}
+
+\usepackage{wrapfig}
+
+\begin{document}
+
+%----------------------------------------------------------------------------
+\Huge
+\begin{center}
+\underline{Predictions Report} 
+\end{center}
+\vspace{1.2cm}
+\textbf{\textit{
+\huge{
+By: 
+Akanksha Mishra,Saahil Singla
+}
+}}
+
+\Large{
+This is a Latex report for predicting data assignment. We have trained our model with training data and then predicted the if flight will be delayed or not on the test data. After that we have computed accuracy of our model using confusion matrix. 
+}
+\vspace{1.2cm}
+
+\underline{Implementation and Algorithm:}
+We have written a Map Reduce job which runs on the 36 training data files and trained our model. We send the training data to our Mapper which cleans the data and filter out the unnecessary columns. We take only those columns which are required either for attributes of our model or used to output data. 
+We have used key as "Month" to develop 12 models so that we can train our model on month wise data. 
+In our reducer, we use Naive Bayes algorithm and create our model on basis of attributes present in values being sent by Mapper. 
+It trains a NaiveBayes classifier. For parameter tuning of the classifier, we enable the use of Kernel Estimator and disable Supervised Discretization properties of Weka’s NaiveBayes classifier. This model predicts if the flight is delayed or not based on the attributes such as Holidays. We have assumed that flights get delayed over holidays as there is rush during that time. Similarly, other attributes contributes such as some particular airline carrier gets delayed often or there is particular time when the flights gets delayed. So our model is trained on such factors.
+
+We run another Map-reduce job and send this model as an input to our job. Our mapper this time cleans the Test data and sends out the data to reducer in the same key-value pair format.
+Reducer this time decode the model and read the Model and use it to predict if flight is delayed or not on the test data. 
+
+Now, we find accuracy of our program using confusion matrix. 
+We have validation file, so we cross-check our answer with the validation file, create a confusion matrix and compute Accuracy. We check if we have predicted True that flight will be delayed and it was True in the validation file, same for False i.e it was not delayed, (TT and FF) are divided by total (TT+ FF+ TF+FT) values. 
+
+EMR takes all the time in which it takes time for starting cluster as well as all the scripts been applied.
+\vspace{1.2cm}
+\begin{tabular}{ |p{2.5cm}||p{2.5cm}|p{2.5cm}|p{2.5cm}|  }
+ \hline
+ \multicolumn{4}{|c|}{Time of  Computation} \\
+ \hline
+ Machine & Model-Training & Model-Test & input size\\
+ \hline
+Locally & 3 mins approx & 4 mins approx& all\\
+ \hline
+EMR & Total Time:  & 9 mins approx & all\\
+\hline
+\end{tabular}
+
+\vspace{1.2cm}
+\vspace{1.2cm}
+
+
+
+%----------------------------------------------------------------------------
+\newpage
+\huge
+
+\begin{center}
+\underline{Output} 
+\end{center}
+Our output is too large to attach, so here is a snapshot from the output:
+
+\vspace{1.2cm}
+\includegraphics[scale=0.5]{image.png}
+
+
+%----------------------------------------------------------------------------
+\newpage
+\huge
+
+\begin{center}
+\underline{Conclusion} 
+\end{center}
+Confusion Matrix: 
+We have the following values and we use this formula to calculate Accuracy.
+
+TT : 721131
+\linebreak
+FF : 1256161 
+\linebreak
+TF : 1259956 
+\linebreak
+FT : 465546 
+\linebreak
+
+Accuracy = ((TT + FT)/(TT+FF+FT+TF))*100
+\newline
+         = (1977292)/(3702794)*100
+         \linebreak
+Accuracy: 53.40 percentage 
+
+Output from our phython script which finds out the accuracy. 
+\newline
+	"Percentage Accurate:  53.40" 
+	\newline
+	"True True : 721131 " 
+	\newline
+	"True False: 1259956"  
+	\newline
+	"False True: 465546 " 
+	\newline
+	'False False: 1256161' 
+	\newline
+%----------------------------------------------------------------------------
+%Second example, scaling and image
+
+
+\end{document}
+
+
